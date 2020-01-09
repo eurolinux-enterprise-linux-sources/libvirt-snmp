@@ -1,6 +1,6 @@
 Name:		libvirt-snmp
 Version:	0.0.2
-Release:	4%{?dist}%{?extra_release}
+Release:	5%{?dist}%{?extra_release}
 Summary:	SNMP functionality for libvirt
 
 Group:		Development/Libraries
@@ -13,6 +13,7 @@ Patch2: libvirt-snmp-eliminate-bogus-check-for-NULL-array.patch
 Patch3: libvirt-snmp-fix-startup-logic-for-selecting-stderr-vs-syslog.patch
 Patch4: libvirt-snmp-Fix-off-by-one-error.patch 
 Patch5: libvirt-snmp-Stop-event-thread-on-server-stop.patch
+Patch6: libvirt-snmp-LIBVIRT-MIB-Comply-with-formatting-rules.patch
 
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -29,6 +30,7 @@ Provides a way to control libvirt through SNMP protocol.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 %configure
@@ -48,6 +50,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec 04 2015 Michal Privoznik <mprivozn@redhat.com> 0.0.2-5
+- Make MIB file formatting rules compliant
+
 * Thu Aug 08 2013 Michal Privoznik <mprivozn@redhat.com> 0.0.2-4
 - stop event thread on server stop
 

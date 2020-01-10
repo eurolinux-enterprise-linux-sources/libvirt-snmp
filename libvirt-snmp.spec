@@ -1,6 +1,6 @@
 Name:		libvirt-snmp
 Version:	0.0.3
-Release:	2%{?dist}
+Release:	5%{?dist}
 Summary:	SNMP functionality for libvirt
 
 Group:		Development/Libraries
@@ -31,6 +31,16 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 14 2014 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5
+- Rebuild for fixed net-snmp (libvirt-snmp BZ: 1064346 net-snmp BZ: 1064437)
+- Fix day name in the changelog (Feb 2 2011 was Wed not Thu)
+
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.0.3-4
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.0.3-3
+- Mass rebuild 2013-12-27
+
 * Fri Jul 12 2013 Jan Safranek <jsafrane@redhat.com> - 0.0.3-2
 - Rebuilt for new net-snmp
 
@@ -65,5 +75,5 @@ make install DESTDIR=$RPM_BUILD_ROOT
 - resolve licensing conflicts
 - add unified header to sources
 
-* Thu Feb  2 2011 Michal Privoznik <mprivozn@redhat.com> 0.0.1-1
+* Wed Feb  2 2011 Michal Privoznik <mprivozn@redhat.com> 0.0.1-1
 - initial revision

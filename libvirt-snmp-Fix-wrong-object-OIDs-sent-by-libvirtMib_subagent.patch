@@ -1,0 +1,53 @@
+From e9d60ba3f6aea1bc9fd47756c6b525e98088ed9a Mon Sep 17 00:00:00 2001
+Message-Id: <e9d60ba3f6aea1bc9fd47756c6b525e98088ed9a.1542817626.git.mprivozn@redhat.com>
+In-Reply-To: <82cacdca43231d3eade90372c20d0f6e35431a1d.1542817626.git.mprivozn@redhat.com>
+References: <82cacdca43231d3eade90372c20d0f6e35431a1d.1542817626.git.mprivozn@redhat.com>
+From: Miguel Martin <mmartinv@redhat.com>
+Date: Mon, 3 Sep 2018 14:44:38 +0200
+Subject: [snmp PATCH 2/2] Fix wrong object OIDs sent by libvirtMib_subagent
+
+RHEL-7.7: https://bugzilla.redhat.com/show_bug.cgi?id=1624839
+RHEL-7.6.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641995
+RHEL-7.5.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641997
+
+The objects OIDs sent by the guest agent are:
+libvirtGuestName.0
+libvirtGuestUUID.1
+libvirtGuestState.2
+libvirtGuestRowStatus.3
+
+The expected libvirtGuestNotif objects OID would be:
+libvirtGuestName.0
+libvirtGuestUUID.0
+libvirtGuestState.0
+libvirtGuestRowStatus.0
+
+Signed-off-by: Miguel Martin <mmartinv@redhat.com>
+(cherry picked from commit 9dcfc08d8c967e66271d310d8f3f2630df751562)
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
+ src/libvirtNotifications.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/libvirtNotifications.c b/src/libvirtNotifications.c
+index 135f177..0522d54 100644
+--- a/src/libvirtNotifications.c
++++ b/src/libvirtNotifications.c
+@@ -38,11 +38,11 @@ send_libvirtGuestNotif_trap(virDomainPtr dom)
+     const oid libvirtGuestName_oid[] =
+         { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 2, 0 };
+     const oid libvirtGuestUUID_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 1, 1 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 1, 0 };
+     const oid libvirtGuestState_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 3, 2 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 3, 0 };
+     const oid libvirtGuestRowStatus_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 9, 3 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 9, 0 };
+ 
+ 
+     const char *domName = virDomainGetName(dom);
+-- 
+2.18.1
+

@@ -1,0 +1,287 @@
+From 82cacdca43231d3eade90372c20d0f6e35431a1d Mon Sep 17 00:00:00 2001
+Message-Id: <82cacdca43231d3eade90372c20d0f6e35431a1d.1542817626.git.mprivozn@redhat.com>
+From: Michael Corcoran <tracer@outlook.co.nz>
+Date: Tue, 20 Mar 2018 08:41:30 +0000
+Subject: [snmp PATCH 1/2] Replace placeholder org OID with libvirt OID
+
+RHEL-7.7: https://bugzilla.redhat.com/show_bug.cgi?id=1624839
+RHEL-7.6.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641995
+RHEL-7.5.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641997
+
+An OID of 36957 was assigned to libvirt by IANA, but the placeholder OID
+of 12345 was never replaced.
+
+IANA lists the libvirt registration as:
+36957
+  libvirt
+    Daniel Veillard
+      daniel&veillard.com
+
+https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
+
+Signed-off-by: Michael Corcoran <tracer@outlook.co.nz>
+(cherry picked from commit 1ad3cf35db0ea437d775dc988ff197575ae349bb)
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
+ src/LIBVIRT-MIB.txt                            |  7 ++++---
+ src/libvirtGuestTable.h                        |  2 +-
+ src/libvirtGuestTable_data_access.c            |  4 ++--
+ src/libvirtGuestTable_data_access.h            |  2 +-
+ src/libvirtGuestTable_data_get.c               | 16 ++++++++--------
+ src/libvirtGuestTable_data_get.h               |  2 +-
+ src/libvirtGuestTable_data_set.c               |  6 +++---
+ src/libvirtGuestTable_data_set.h               |  2 +-
+ src/libvirtGuestTable_interface.c              |  2 +-
+ src/libvirtGuestTable_oids.h                   |  2 +-
+ src/libvirtNotifications.c                     | 10 +++++-----
+ 12 files changed, 37 insertions(+), 36 deletions(-)
+
+diff --git a/src/LIBVIRT-MIB.txt b/src/LIBVIRT-MIB.txt
+index d83db49..d13923b 100644
+--- a/src/LIBVIRT-MIB.txt
++++ b/src/LIBVIRT-MIB.txt
+@@ -16,7 +16,7 @@ IMPORTS
+ 
+ 
+ libvirtMIB MODULE-IDENTITY
+-    LAST-UPDATED "201012020000Z"
++    LAST-UPDATED "201803200000Z"
+     ORGANIZATION "www.libvirt.org"
+     CONTACT-INFO
+ 	"email:    libvirt-users@redhat.com
+@@ -24,10 +24,11 @@ libvirtMIB MODULE-IDENTITY
+     DESCRIPTION
+ 	"First draft, for experimental purposes only!
+ 	 Not to be used in real deployment!"
++    REVISION    "201803200000Z"
++    DESCRIPTION "Updated OID"
+     REVISION    "201012020000Z"
+     DESCRIPTION "Initial version."
+-    ::= { enterprises 12345 }
+--- TODO: user real libvirt OID here ^
++    ::= { enterprises 36957 }
+ 
+ -- structure advised by RFC 4181:
+ 
+diff --git a/src/libvirtGuestTable_data_access.c b/src/libvirtGuestTable_data_access.c
+index 2958284..d7de4d5 100644
+--- a/src/libvirtGuestTable_data_access.c
++++ b/src/libvirtGuestTable_data_access.c
+@@ -51,7 +51,7 @@
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+ 
+ /**
+@@ -291,7 +291,7 @@ libvirtGuestTable_row_prep( libvirtGuestTable_rowreq_ctx *rowreq_ctx)
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestUUID
+  * libvirtGuestUUID is subid 1 of libvirtGuestEntry.
+  * Its status is Current, and its access level is NoAccess.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.1
++ * OID: .1.3.6.1.4.1.36957.1.1.1.1
+  * Description:
+ The UUID of the virtual guest.
+  *
+diff --git a/src/libvirtGuestTable_data_access.h b/src/libvirtGuestTable_data_access.h
+index 3491aa4..49afb9d 100644
+--- a/src/libvirtGuestTable_data_access.h
++++ b/src/libvirtGuestTable_data_access.h
+@@ -45,7 +45,7 @@ extern "C" {
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+ 
+ 
+diff --git a/src/libvirtGuestTable_data_get.c b/src/libvirtGuestTable_data_get.c
+index b252bdd..1fa9b27 100644
+--- a/src/libvirtGuestTable_data_get.c
++++ b/src/libvirtGuestTable_data_get.c
+@@ -50,7 +50,7 @@
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+ 
+ /* ---------------------------------------------------------------------
+@@ -134,7 +134,7 @@ libvirtGuestTable_indexes_set(libvirtGuestTable_rowreq_ctx *rowreq_ctx, char *li
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestName
+  * libvirtGuestName is subid 2 of libvirtGuestEntry.
+  * Its status is Current, and its access level is ReadOnly.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.2
++ * OID: .1.3.6.1.4.1.36957.1.1.1.2
+  * Description:
+ Name of active virtual guest.
+  *
+@@ -222,7 +222,7 @@ libvirtGuestName_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, char **libvirtGu
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestState
+  * libvirtGuestState is subid 3 of libvirtGuestEntry.
+  * Its status is Current, and its access level is Create.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.3
++ * OID: .1.3.6.1.4.1.36957.1.1.1.3
+  * Description:
+ Current state of the active guest.
+  *
+@@ -274,7 +274,7 @@ libvirtGuestState_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, u_long * libvir
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestCpuCount
+  * libvirtGuestCpuCount is subid 4 of libvirtGuestEntry.
+  * Its status is Current, and its access level is ReadOnly.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.4
++ * OID: .1.3.6.1.4.1.36957.1.1.1.4
+  * Description:
+ Number of virtual CPUs the virtual guest uses.
+  *
+@@ -326,7 +326,7 @@ libvirtGuestCpuCount_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, u_long * lib
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestMemoryCurrent
+  * libvirtGuestMemoryCurrent is subid 5 of libvirtGuestEntry.
+  * Its status is Current, and its access level is ReadOnly.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.5
++ * OID: .1.3.6.1.4.1.36957.1.1.1.5
+  * Description:
+ Current amount of memory (in MiB) used by the virtual guest.
+  *
+@@ -378,7 +378,7 @@ libvirtGuestMemoryCurrent_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, u_long
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestMemoryLimit
+  * libvirtGuestMemoryLimit is subid 6 of libvirtGuestEntry.
+  * Its status is Current, and its access level is ReadOnly.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.6
++ * OID: .1.3.6.1.4.1.36957.1.1.1.6
+  * Description:
+ The maximum amount of memory (in MiB) that can be used by the virtual
+ 	guest.
+@@ -431,7 +431,7 @@ libvirtGuestMemoryLimit_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, u_long *
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestCpuTime
+  * libvirtGuestCpuTime is subid 7 of libvirtGuestEntry.
+  * Its status is Current, and its access level is ReadOnly.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.7
++ * OID: .1.3.6.1.4.1.36957.1.1.1.7
+  * Description:
+ The CPU time used by the virtual guest, in nanoseconds.
+  *
+@@ -479,7 +479,7 @@ libvirtGuestCpuTime_get( libvirtGuestTable_rowreq_ctx *rowreq_ctx, U64 * libvirt
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestRowStatus
+  * libvirtGuestRowStatus is subid 9 of libvirtGuestEntry.
+  * Its status is Current, and its access level is Create.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.9
++ * OID: .1.3.6.1.4.1.36957.1.1.1.9
+  * Description:
+ Status of the virtual guest.
+ 
+diff --git a/src/libvirtGuestTable_data_get.h b/src/libvirtGuestTable_data_get.h
+index 450d112..f89c3bc 100644
+--- a/src/libvirtGuestTable_data_get.h
++++ b/src/libvirtGuestTable_data_get.h
+@@ -44,7 +44,7 @@ extern "C" {
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+     /*
+      * indexes
+diff --git a/src/libvirtGuestTable_data_set.c b/src/libvirtGuestTable_data_set.c
+index d67c9d9..7ee8e9f 100644
+--- a/src/libvirtGuestTable_data_set.c
++++ b/src/libvirtGuestTable_data_set.c
+@@ -46,7 +46,7 @@
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+     /*
+      * NOTE: if you update this chart, please update the versions in
+@@ -407,7 +407,7 @@ libvirtGuestTable_undo_commit( libvirtGuestTable_rowreq_ctx *rowreq_ctx)
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestState
+  * libvirtGuestState is subid 3 of libvirtGuestEntry.
+  * Its status is Current, and its access level is Create.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.3
++ * OID: .1.3.6.1.4.1.36957.1.1.1.3
+  * Description:
+ Current state of the active guest.
+  *
+@@ -586,7 +586,7 @@ libvirtGuestState_undo( libvirtGuestTable_rowreq_ctx *rowreq_ctx)
+  * LIBVIRT-MIB::libvirtGuestEntry.libvirtGuestRowStatus
+  * libvirtGuestRowStatus is subid 9 of libvirtGuestEntry.
+  * Its status is Current, and its access level is Create.
+- * OID: .1.3.6.1.4.1.12345.1.1.1.9
++ * OID: .1.3.6.1.4.1.36957.1.1.1.9
+  * Description:
+ Status of the virtual guest.
+ 
+diff --git a/src/libvirtGuestTable_data_set.h b/src/libvirtGuestTable_data_set.h
+index cce0fe7..ea6391c 100644
+--- a/src/libvirtGuestTable_data_set.h
++++ b/src/libvirtGuestTable_data_set.h
+@@ -44,7 +44,7 @@ extern "C" {
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+ 
+ 
+diff --git a/src/libvirtGuestTable_interface.c b/src/libvirtGuestTable_interface.c
+index ce29c3b..ac31bea 100644
+--- a/src/libvirtGuestTable_interface.c
++++ b/src/libvirtGuestTable_interface.c
+@@ -68,7 +68,7 @@
+ /*
+  * LIBVIRT-MIB::libvirtGuestTable is subid 1 of libvirtObjects.
+  * Its status is Current.
+- * OID: .1.3.6.1.4.1.12345.1.1, length: 9
++ * OID: .1.3.6.1.4.1.36957.1.1, length: 9
+ */
+ typedef struct libvirtGuestTable_interface_ctx_s {
+ 
+diff --git a/src/libvirtGuestTable_oids.h b/src/libvirtGuestTable_oids.h
+index 85950f4..67ccd6f 100644
+--- a/src/libvirtGuestTable_oids.h
++++ b/src/libvirtGuestTable_oids.h
+@@ -29,7 +29,7 @@ extern "C" {
+ 
+ 
+ /* column number definitions for table libvirtGuestTable */
+-#define LIBVIRTGUESTTABLE_OID              1,3,6,1,4,1,12345,1,1
++#define LIBVIRTGUESTTABLE_OID              1,3,6,1,4,1,36957,1,1
+ 
+ 
+ #define COLUMN_LIBVIRTGUESTUUID         1
+diff --git a/src/libvirtNotifications.c b/src/libvirtNotifications.c
+index 52c7ae4..135f177 100644
+--- a/src/libvirtNotifications.c
++++ b/src/libvirtNotifications.c
+@@ -34,15 +34,15 @@ int
+ send_libvirtGuestNotif_trap(virDomainPtr dom)
+ {
+     netsnmp_variable_list *var_list = NULL;
+-    const oid libvirtGuestNotif_oid[] = { 1, 3, 6, 1, 4, 1, 12345, 0, 1 };
++    const oid libvirtGuestNotif_oid[] = { 1, 3, 6, 1, 4, 1, 36957, 0, 1 };
+     const oid libvirtGuestName_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 12345, 1, 1, 1, 2, 0 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 2, 0 };
+     const oid libvirtGuestUUID_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 12345, 1, 1, 1, 1, 1 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 1, 1 };
+     const oid libvirtGuestState_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 12345, 1, 1, 1, 3, 2 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 3, 2 };
+     const oid libvirtGuestRowStatus_oid[] =
+-        { 1, 3, 6, 1, 4, 1, 12345, 1, 1, 1, 9, 3 };
++        { 1, 3, 6, 1, 4, 1, 36957, 1, 1, 1, 9, 3 };
+ 
+ 
+     const char *domName = virDomainGetName(dom);
+-- 
+2.18.1
+

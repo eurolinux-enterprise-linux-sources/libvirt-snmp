@@ -1,20 +1,31 @@
 Name:		libvirt-snmp
 Version:	0.0.3
-Release:	5%{?dist}
+Release:	5%{?dist}.2%{?extra_release}
 Summary:	SNMP functionality for libvirt
 
 Group:		Development/Libraries
 License:	GPLv2+
-URL:		http://libvirt.org
-Source0:	http://www.libvirt.org/sources/snmp/libvirt-snmp-%{version}.tar.gz
+URL:		https://libvirt.org
+Source0:	https://www.libvirt.org/sources/snmp/libvirt-snmp-%{version}.tar.gz
 
-BuildRequires: net-snmp-perl net-snmp net-snmp-utils net-snmp-devel libvirt-devel
+BuildRequires: net-snmp-perl
+BuildRequires: net-snmp
+BuildRequires: net-snmp-utils
+BuildRequires: net-snmp-devel
+BuildRequires: libvirt-devel
+BuildRequires: git
+BuildRequires: gcc
+
+
+Patch1: libvirt-snmp-Replace-placeholder-org-OID-with-libvirt-OID.patch
+Patch2: libvirt-snmp-Fix-wrong-object-OIDs-sent-by-libvirtMib_subagent.patch
+Patch3: libvirt-snmp-Send-sysUpTime-in-traps.patch
 
 %description
 Provides a way to control libvirt through SNMP protocol.
 
 %prep
-%setup -q
+%autosetup -S git_am
 
 %build
 %configure
@@ -31,6 +42,14 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 12 2018 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5.el7_6.1
+- Send sysUptime in traps (BZ: 1653591)
+
+* Thu Nov 22 2018 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5.el7_6.1
+- Replace placeholder org OID with libvirt OID (BZ: 1603154)
+- Fix object OIDs for SNMP traps (BZ: 1641995)
+- Modernize spec file
+
 * Fri Feb 14 2014 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5
 - Rebuild for fixed net-snmp (libvirt-snmp BZ: 1064346 net-snmp BZ: 1064437)
 - Fix day name in the changelog (Feb 2 2011 was Wed not Thu)

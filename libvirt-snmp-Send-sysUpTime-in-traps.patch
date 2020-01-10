@@ -1,0 +1,64 @@
+From c120622503c5cf46ae5f6fc4eed8c4dda1fe041e Mon Sep 17 00:00:00 2001
+Message-Id: <c120622503c5cf46ae5f6fc4eed8c4dda1fe041e.1544602895.git.mprivozn@redhat.com>
+From: Michal Privoznik <mprivozn@redhat.com>
+Date: Mon, 10 Sep 2018 15:36:05 +0200
+Subject: [snmp PATCH] Send sysUpTime in traps
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1624879
+
+According to RFC 1905:
+
+  The first two variable bindings in the variable binding list of
+  an SNMPv2-Trap-PDU are sysUpTime.0 and snmpTrapOID.0
+  respectively.
+
+We are setting the snmpTrapOID.0 variable but not sysUpTime.0.
+
+Based on work of: Miguel Martin <mmartinv@redhat.com>
+
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+(cherry picked from commit 0ca48c8abe6e29ee0a61f95f67cfc1da0e486b70)
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
+ src/libvirtNotifications.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/libvirtNotifications.c b/src/libvirtNotifications.c
+index 52c7ae4..54a35c4 100644
+--- a/src/libvirtNotifications.c
++++ b/src/libvirtNotifications.c
+@@ -28,6 +28,7 @@
+ #include "libvirtGuestTable_enums.h"
+ #include "libvirtSnmpError.h"
+ 
++static const oid sysuptime_oid[] = { 1, 3, 6, 1, 2, 1, 1, 3, 0 };
+ static const oid snmptrap_oid[] = { 1, 3, 6, 1, 6, 3, 1, 1, 4, 1, 0 };
+ 
+ int
+@@ -49,6 +50,7 @@ send_libvirtGuestNotif_trap(virDomainPtr dom)
+     unsigned char domUUID[VIR_UUID_BUFLEN];
+     virDomainInfo info;
+     int rowstatus = ROWSTATUS_ACTIVE;
++    u_long uptime = netsnmp_get_agent_uptime();
+ 
+     if (virDomainGetUUID(dom, domUUID) < 0) {
+         printLibvirtError("Failed to get domain UUID");
+@@ -76,6 +78,15 @@ send_libvirtGuestNotif_trap(virDomainPtr dom)
+             break;
+     };
+ 
++    /*
++     * Set the sysUptime.0 value
++     */
++    snmp_varlist_add_variable(&var_list,
++                              sysuptime_oid, OID_LENGTH(sysuptime_oid),
++                              ASN_TIMETICKS,
++                              (u_char*)&uptime,
++                              sizeof(uptime));
++
+     /*
+      * Set the snmpTrapOid.0 value
+      */
+-- 
+2.19.2
+

@@ -1,8 +1,8 @@
-From c120622503c5cf46ae5f6fc4eed8c4dda1fe041e Mon Sep 17 00:00:00 2001
-Message-Id: <c120622503c5cf46ae5f6fc4eed8c4dda1fe041e.1544602895.git.mprivozn@redhat.com>
+From 0ca48c8abe6e29ee0a61f95f67cfc1da0e486b70 Mon Sep 17 00:00:00 2001
+Message-Id: <0ca48c8abe6e29ee0a61f95f67cfc1da0e486b70.1538581296.git.mprivozn@redhat.com>
 From: Michal Privoznik <mprivozn@redhat.com>
 Date: Mon, 10 Sep 2018 15:36:05 +0200
-Subject: [snmp PATCH] Send sysUpTime in traps
+Subject: [libvirt-snmp][PATCH] Send sysUpTime in traps
 
 https://bugzilla.redhat.com/show_bug.cgi?id=1624879
 
@@ -17,14 +17,12 @@ We are setting the snmpTrapOID.0 variable but not sysUpTime.0.
 Based on work of: Miguel Martin <mmartinv@redhat.com>
 
 Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
-(cherry picked from commit 0ca48c8abe6e29ee0a61f95f67cfc1da0e486b70)
-Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
 ---
  src/libvirtNotifications.c | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
 diff --git a/src/libvirtNotifications.c b/src/libvirtNotifications.c
-index 52c7ae4..54a35c4 100644
+index 0522d54..5dadc31 100644
 --- a/src/libvirtNotifications.c
 +++ b/src/libvirtNotifications.c
 @@ -28,6 +28,7 @@
@@ -60,5 +58,5 @@ index 52c7ae4..54a35c4 100644
       * Set the snmpTrapOid.0 value
       */
 -- 
-2.19.2
+2.16.4
 

@@ -1,14 +1,13 @@
-From e9d60ba3f6aea1bc9fd47756c6b525e98088ed9a Mon Sep 17 00:00:00 2001
-Message-Id: <e9d60ba3f6aea1bc9fd47756c6b525e98088ed9a.1542817626.git.mprivozn@redhat.com>
-In-Reply-To: <82cacdca43231d3eade90372c20d0f6e35431a1d.1542817626.git.mprivozn@redhat.com>
-References: <82cacdca43231d3eade90372c20d0f6e35431a1d.1542817626.git.mprivozn@redhat.com>
+From 087ff37bb3c5a9ffdcaa0567f9ff39e13e4559d6 Mon Sep 17 00:00:00 2001
+Message-Id: <087ff37bb3c5a9ffdcaa0567f9ff39e13e4559d6.1536075068.git.mprivozn@redhat.com>
+In-Reply-To: <97f0c101bb0afba7a51eeb47e97c6e274f2ef16f.1536075068.git.mprivozn@redhat.com>
+References: <97f0c101bb0afba7a51eeb47e97c6e274f2ef16f.1536075068.git.mprivozn@redhat.com>
 From: Miguel Martin <mmartinv@redhat.com>
 Date: Mon, 3 Sep 2018 14:44:38 +0200
-Subject: [snmp PATCH 2/2] Fix wrong object OIDs sent by libvirtMib_subagent
+Subject: [libvirt-snmp][PATCH] Fix wrong object OIDs sent by
+ libvirtMib_subagent
 
-RHEL-7.7: https://bugzilla.redhat.com/show_bug.cgi?id=1624839
-RHEL-7.6.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641995
-RHEL-7.5.z: https://bugzilla.redhat.com/show_bug.cgi?id=1641997
+https://bugzilla.redhat.com/show_bug.cgi?id=1624839
 
 The objects OIDs sent by the guest agent are:
 libvirtGuestName.0
@@ -49,5 +48,5 @@ index 135f177..0522d54 100644
  
      const char *domName = virDomainGetName(dom);
 -- 
-2.18.1
+2.16.4
 

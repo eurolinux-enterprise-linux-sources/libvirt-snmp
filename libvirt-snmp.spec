@@ -1,6 +1,6 @@
 Name:		libvirt-snmp
 Version:	0.0.3
-Release:	5%{?dist}.2%{?extra_release}
+Release:	6%{?dist}%{?extra_release}
 Summary:	SNMP functionality for libvirt
 
 Group:		Development/Libraries
@@ -42,12 +42,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Dec 12 2018 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5.el7_6.1
-- Send sysUptime in traps (BZ: 1653591)
-
-* Thu Nov 22 2018 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5.el7_6.1
+* Tue Sep 4 2018 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-6
 - Replace placeholder org OID with libvirt OID (BZ: 1603154)
-- Fix object OIDs for SNMP traps (BZ: 1641995)
+- Fix object OIDs for SNMP traps (BZ: 1624839)
+- Send sysUptime in traps (BZ: 1624879)
 - Modernize spec file
 
 * Fri Feb 14 2014 Michal Privoznik <mprivozn@redhat.com> - 0.0.3-5
